@@ -1,103 +1,182 @@
-# AngularJS / ES6 / JSPM / Gulp Starter Project
- 
-A quick start template for web development with JSPM, Gulp, ECMAScript 6/2015 and AngularJS. 
+This project is a starting point for AngularJS projects using the [Gulp](http://gulpjs.com/) streaming build system. Almost everything important is in [gulpfile.js](https://github.com/paislee/healthy-gulp-angular/blob/master/gulpfile.js).
 
-Featuring
+For a full discussion of the setup, please refer to the companion [blog post](http://paislee.io/a-healthy-gulp-setup-for-angularjs-projects).
 
-🙈 Gulp-based workflow
+## Installation
 
-🍄 ES6 with on-the-fly transpilation (using Babel) in development
+Before running any Gulp tasks:
 
-🐶 AngularJS starter app
+1. Check out this repository
+2. Ensure you have node installed
+3. Run `npm install` in the root directory (this will install bower dependencies too)
+4. For livereload functionality, install the [livereload Chrome extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
 
-🐥 Bundling transpiled JS for prodution
+## Project Structure
 
-🐎 Templates caching
+The project ships with a directory structure like:
 
-🐠 Minification
+    /healthy-gulp-angular
+    |
+    |---- package.json
+    |
+    |---- bower.json
+    |
+    |---- gulpfile.js
+    |
+    |---- /app
+    |     |
+    |     |---- index.html
+    |     |---- app.js
+    |     |
+    |     |---- /styles
+    |     |     |
+    |     |     |---- _settings.scss
+    |     |     |---- app.scss
+    |     |
+    |     |---- /components
+    |           |
+    |           ...
+    |
+    |---- server.js
+    |
+    |---- /devServer
+    |     |
+    |     |---- ...
+    |
+    |---- (/dist.dev)
+    |
+    |---- (/dist.prod)
+    
 
-🐕 Assets optimization
+__Let's break this down..__
 
-🐙 JSPM
+#### [package.json](https://github.com/paislee/healthy-gulp-angular/blob/master/package.json)
 
-🐷 SASS
+Server-side (command-line) dependencies.
 
-🐝 Live Reload
+#### [bower.json](https://github.com/paislee/healthy-gulp-angular/blob/master/bower.json)
 
+Client-side (browser) dependencies.
 
-## Development Requirements
+#### [gulpfile.js](https://github.com/paislee/healthy-gulp-angular/blob/master/gulpfile.js)
 
-|Dependency|OS X Installation|
-|:--|:--|
-|node.js|`brew install nodejs`|
-|gulp|`npm install -g gulp`|
-|jspm|`npm install -g jspm`|
+Where all the Gulp streams and tasks are specified. Tasks are outlined below. This file is discussed in detail in the [blog post](http://paislee.io/a-healthy-gulp-setup-for-angularjs-projects).
 
-## Development
+#### [/app](https://github.com/paislee/healthy-gulp-angular/blob/master/app)
 
-### Installation
+All first-party application source code lives here, including HTML, scripts, and styles of whatever flavor.
 
-```
-git clone https://github.com/myurasov/Angular-ES6-JSPM-Gulp-Boilerplate.git myapp
-cd myapp
-npm install
-jspm install
-gulp
-```
+#### [/app/index.html](https://github.com/paislee/healthy-gulp-angular/blob/master/app/index.html)
 
-### Live Reload
+The single page app "shell page". Adapted from [Angular Seed](https://github.com/angular/angular-seed/blob/master/app/index.html). All sources are automatically wired in with gulp-inject.
 
-`gulp`
+#### [/app/app.js](https://github.com/paislee/healthy-gulp-angular/blob/master/app/app.js)
 
-### Building
+The app's main angular module is defined here. This file is always loaded first with gulp-angular-filesort.
 
-`gulp build:<environment>`
+#### [/app/components](https://github.com/paislee/healthy-gulp-angular/blob/master/app/components)
 
-After the build the app can be served from __src/app__ directory.
+I like to group my angular scripts by comonent. Each sub-directory here typically contains a directive and a matching html partial.
 
-## Environments
+#### [/app/styles](https://github.com/paislee/healthy-gulp-angular/blob/master/app/styles)
 
-* **development**
-* **test**
-* **staging**
-* **production**
+Custom app styles (I use SASS) live here. There's also a foundation settings file.
 
-## Available Gulp Tasks
+#### [server.js](https://github.com/paislee/healthy-gulp-angular/blob/master/server.js)
 
-|Command|Desc|
-|:--|:--|
-|`gulp cleanup`|Remove build files|
-|`gulp serve` _(default)_|Launch with live reload|
-|`gulp set-environment:development`|Set environment to __development__ \*|
-|`gulp set-environment:test`|Set environment to __test__ \*|
-|`gulp set-environment:staging`|Set environment to __staging__ \*|
-|`gulp set-environment:production`|Set environment to __production__ \*|
-|`gulp update-revision`|Update current revision based on the git commit or date/time \**|
-|`gulp build:development`|Build for the __development__ environment|
-|`gulp build:test`|Build for the __test__ environment|
-|`gulp build:staging`|Build for the __staging__ environment|
-|`gulp build:production`|Build for the __production__ environment|
-|`gulp compile-ejs`|Compile EJS files|
-|`gulp compile-sass`|Compile SASS files|
-|`gulp compile-scripts`|Compile scripts. Creates self-sufficient bundle (except for __development__ environment)|
-|`gulp compile-templates`|Compile templates into cache. In __development__ templates are not cached.|
-|`gulp optimize-asssets`|Optimize assets|
-|`gulp post-build`|Perform post-build steps|
+This is the entrypoint for the ExpressJS development server. It respects the environment variable `NODE_ENV`, taking its value as the directory out of which to serve static resources. It defaults to `dist.dev` to serve development files, and also accepts `dist.prod` to serve the production files.
 
-\* Current environment is stored in /environment file
+#### [/devServer](https://github.com/paislee/healthy-gulp-angular/blob/master/devServer)
 
-\** Current revision is stored in /revison file
+The scripts for the development server. I'll typically put mock API responses in here.
 
+### Processed Sources
 
-## Author
+The gulp tasks listed below deal with taking sources from /app and "compiling" them for either development or production. `*-dev` tasks will output to /dist.dev, and `*-prod` will output to /dist.prod. Here's an overview of the directory structures for each:
 
-Mikhail Yurasov <<me@yurasov.me>>.
+### /dist.dev
 
-Web/Mobile/Fullstack developer, Hackatons enthusiast.
+Sources built for development. Styles are compiled to CSS. Everything else from /app is validated and moved directly in here. Nothing is concatenated, uglified, or minified. Vendor scripts are moved in as well.
 
-* [Linkedin](https://www.linkedin.com/profile/view?id=173007295)
-* [Github](https://github.com/myurasov)
+    /dist.dev
+    |
+    |---- /bower_components
+    |
+    |---- /components
+    |     |
+    |     ...
+    |
+    |---- /styles
+    |     |
+    |     ...
+    |
+    |---- app.js
+    |
+    |---- index.html
 
-## License
+### /dist.prod
 
-Basically, [WTFPL](http://www.wtfpl.net/)
+Sources built for production. Everything is validated, things are concatenated and uglified. HTML partials are pre-loaded into the angular template cache with gulp-ng-html2js.
+
+    /dist.prod
+    |
+    |---- /scripts
+    |     |
+    |     |---- app.min.js
+    |     |---- vendor.min.js
+    |
+    |---- /styles
+    |     |
+    |     |---- app.min.css
+    |
+    |---- index.html
+    
+Pretty self-explanatory.
+
+## Gulp Tasks
+
+All of the following are available from the command line.
+
+### Essential ones
+
+These tasks I use as part of my regular developments and deploy scripts:
+
+- __`gulp watch-dev`__ Clean, build, and watch live changes to the dev environment. Built sources are served directly by the dev server from /dist.dev.
+- __`gulp watch-prod`__ Clean, build, and watch live changes to the prod environment. Built sources are served directly by the dev server from /dist.prod.
+- __`gulp`__ Default task builds for prod. Built sources are put into /dist.prod, and can be served directly.
+
+### Sub-tasks
+
+All the subtasks can alo be run from the command line:
+
+__HTML__
+
+- __`gulp validate-partials`__ Checks html source files for syntax errors.
+- __`gulp validate-index`__ Checks index.html for syntax errors.
+- __`gulp build-partials-dev`__ Moves html source files into the dev environment.
+
+__Scripts__
+
+- __`gulp convert-partials-to-js`__ Converts partials to javascript using html2js.
+- __`gulp validate-devserver-scripts`__ Runs jshint on the dev server scripts.
+- __`gulp validate-app-scripts`__ Runs jshint on the app scripts.
+- __`gulp build-app-scripts-dev`__ Moves app scripts into the dev environment.
+- __`gulp build-app-scripts-prod`__ Concatenates, uglifies, and moves app scripts and partials into the prod environment.
+
+__Styles__
+
+- __`gulp build-styles-dev`__ Compiles app sass and moves to the dev environment.
+- __`gulp build-styles-prod`__ Compiles and minifies app sass to css and moves to the prod environment.
+- __`gulp build-vendor-scripts-dev`__ Moves vendor scripts into the dev environment.
+- __`gulp build-vendor-scripts-prod`__ Concatenates, uglifies, and moves vendor scripts into the prod environment.
+
+__Index__
+- __`gulp build-index-dev`__ Validates and injects sources into index.html and moves it to the dev environment.
+- __`gulp build-index-prod`__ Validates and injects sources into index.html, minifies and moves it to the dev environment.
+
+__Everything__
+
+- __`gulp build-app-dev`__ Builds a complete dev environment.
+- __`gulp build-app-prod`__ Builds a complete prod environment.
+- __`gulp clean-build-app-dev`__ Cleans and builds a complete dev environment.
+- __`gulp clean-build-app-prod`__ Cleans and builds a complete prod environment.

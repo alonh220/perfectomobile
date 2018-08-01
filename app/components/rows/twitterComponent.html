@@ -1,0 +1,19 @@
+<div layout="row" flex>
+  <div flex="60">
+    <section layout="row" layout-align="start center" layout-padding>
+      <div flex="20"> user</div>
+      <div flex="20"> date</div>
+      <div flex="20"> text</div>
+      <div flex="20"> retweet count</div>
+    </section>
+    <section layout="column">
+      <div ng-repeat="value in vm.data">
+
+        <row data="{value}" forward="vm.selectedItem"></row>
+      </div>
+    </section>
+  </div>
+  <section flex="20">
+    <iframe border=0 frameborder=0 height=250 width=550 ng-src="{{vm.iframe}}"></iframe>
+  </section>
+</div>

@@ -6,3 +6,6 @@
 /src/app/build/
 /src/app/scripts/_*.js
 /src/app/index.html
+/bower_components/
+/dist.dev/
+/dist.prod/

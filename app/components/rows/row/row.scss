@@ -1,0 +1,9 @@
+.row-data{
+    color: white;
+    background: blue;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+    &:nth-child(odd){
+        background: blue;
+    }
+}    

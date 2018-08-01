@@ -1,0 +1,30 @@
+<section   flex layout="row"> 
+    <md-input-container flex="15" class="md-icon-float md-block">
+        <label>Hashtag</label>
+        <input required name="Hashtag" ng-model="vm.filter.hashtag" />
+      </md-input-container>
+
+      <md-input-container flex="15" class="md-icon-float md-block">
+        <label>From</label>
+        <md-datepicker ng-model="vm.filter.since" md-placeholder="Enter date"></md-datepicker>
+    </md-input-container>
+    <md-input-container flex="15" class="md-icon-float md-block">
+        <label>Until</label>
+        <md-datepicker ng-model="vm.filter.until" md-placeholder="Enter date"></md-datepicker>
+    </md-input-container>
+    <md-input-container>
+        <label>State</label>
+        <md-select ng-model="vm.filter.lang">
+          <md-option><em>None</em></md-option>
+          <md-option ng-repeat="lang in vm.lang" ng-value="lang" >
+            {{lang}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <md-button md-no-ink class="md-primary" ng-click="vm.filterClick()">Filter</md-button>
+</section>
+<div layout="row" flex="60" ng-if="vm.loader" layout-sm="column" layout-align="space-around">
+    <md-progress-circular md-mode="determinate" value="{{vm.determinateValue}}"></md-progress-circular>
+  </div>
+<twitter  ng-if="vm.result" data="vm.result" ></twitter>
